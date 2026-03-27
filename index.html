@@ -729,7 +729,7 @@ function toggleMute(){
 
 // ── Settings panel ────────────────────────────────────────
 function openSettings(){
-  const city = localStorage.getItem('location_city') || '';
+  const city = localStorage.getItem('location_city') || localStorage.getItem('location_city_label') || '';
   document.getElementById('settingsCityInput').value = city;
 
   const savedMins = parseInt(localStorage.getItem('dua_freq_mins')) || 5;
@@ -970,12 +970,30 @@ function useGeolocation(){
     return;
   }
   setGeoStatus('Detecting location…');
-  navigator.geolocation.getCurrentPosition(pos => {
+  navigator.geolocation.getCurrentPosition(async pos => {
     const { latitude: lat, longitude: lng } = pos.coords;
     localStorage.setItem('location_lat', lat);
     localStorage.setItem('location_lng', lng);
+
+    // Reverse geocode to get city name
+    let cityLabel = `${lat.toFixed(3)}, ${lng.toFixed(3)}`;
+    try {
+      const r = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`);
+      const d = await r.json();
+      const city = d.city || d.locality || d.principalSubdivision || '';
+      const country = d.countryName || '';
+      if(city) cityLabel = country ? `${city}, ${country}` : city;
+    } catch(e){}
+
+    localStorage.setItem('location_city_label', cityLabel);
     localStorage.removeItem('location_city');
     document.getElementById('locationPrompt').classList.remove('show');
+
+    // Show city in settings input if open
+    const inp = document.getElementById('settingsCityInput');
+    if(inp) inp.value = cityLabel;
+
+    setGeoStatus('');
     closeSettings();
     clearDayCache();
     fetchPrayerTimes(lat, lng);
