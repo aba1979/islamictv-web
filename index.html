@@ -69,8 +69,6 @@
 
     /* ── Top-right: next prayer ── */
     .next-card {
-      grid-column: 2; grid-row: 1;
-      align-self: start;
       background: rgba(201,168,76,.12);
       border: 1px solid rgba(201,168,76,.4);
       border-radius: 14px;
@@ -78,7 +76,6 @@
       text-align: center;
       backdrop-filter: blur(6px);
       min-width: clamp(150px, 18vw, 240px);
-      margin-right: 60px;
     }
     .next-label {
       color: #C9A84C;
@@ -283,16 +280,22 @@
     }
     .prompt-geo:hover { background: rgba(201,168,76,.1); }
 
+    /* ── Top-right wrapper ── */
+    .top-right {
+      grid-column: 2; grid-row: 1;
+      align-self: start;
+      display: flex; align-items: flex-start; gap: clamp(8px, 1vw, 12px);
+    }
+
     /* ── Settings button ── */
     .settings-btn {
-      position: fixed; top: clamp(12px, 1.5vw, 20px); right: clamp(12px, 1.5vw, 20px);
-      z-index: 20;
       background: rgba(0,0,0,.55);
       border: 1px solid rgba(201,168,76,.3);
       border-radius: 10px;
       color: #C9A84C;
-      font-size: 24px;
+      font-size: 22px;
       width: 52px; height: 52px;
+      flex-shrink: 0;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       backdrop-filter: blur(4px);
@@ -422,9 +425,6 @@
 <div class="bg-layer" id="bgA"><img id="bgAimg" src="" alt=""></div>
 <div class="bg-layer hidden" id="bgB"><img id="bgBimg" src="" alt=""></div>
 
-<!-- Settings button -->
-<button class="settings-btn" onclick="openSettings()" title="Settings">⚙</button>
-
 <!-- Mute indicator -->
 <div class="mute-badge" id="muteBadge" onclick="toggleMute()">🔇 MUTED</div>
 
@@ -513,10 +513,13 @@
     <div class="hijri-date" id="hijriDate">...</div>
   </div>
 
-  <div class="next-card">
-    <div class="next-label">Next Prayer</div>
-    <div class="next-name" id="nextName">--</div>
-    <div class="next-countdown" id="nextCountdown">--:--:--</div>
+  <div class="top-right">
+    <div class="next-card">
+      <div class="next-label">Next Prayer</div>
+      <div class="next-name" id="nextName">--</div>
+      <div class="next-countdown" id="nextCountdown">--:--:--</div>
+    </div>
+    <button class="settings-btn" onclick="openSettings()" title="Settings">⚙</button>
   </div>
 
   <div class="dua-block">
