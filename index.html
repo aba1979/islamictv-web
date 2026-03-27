@@ -486,7 +486,7 @@
     <div class="settings-section">
       <span class="settings-label">Adhan Audio</span>
       <div class="mute-toggle" onclick="toggleMute()">
-        <span>Mute Adhan</span>
+        <span id="muteLabel">🔊 Adhan: On</span>
         <div class="toggle-indicator" id="muteToggle"></div>
       </div>
     </div>
@@ -724,6 +724,8 @@ function toggleMute(){
   localStorage.setItem('muted', isMuted ? '1' : '0');
   document.getElementById('muteBadge').classList.toggle('show', isMuted);
   document.getElementById('muteToggle').classList.toggle('on', isMuted);
+  const lbl = document.getElementById('muteLabel');
+  if(lbl) lbl.textContent = isMuted ? '🔇 Adhan: Muted' : '🔊 Adhan: On';
   if(isMuted) stopAthanAudio();
 }
 
@@ -748,6 +750,8 @@ function openSettings(){
   });
 
   document.getElementById('muteToggle').classList.toggle('on', isMuted);
+  const lbl = document.getElementById('muteLabel');
+  if(lbl) lbl.textContent = isMuted ? '🔇 Adhan: Muted' : '🔊 Adhan: On';
   document.getElementById('settingsPanel').classList.add('show');
 }
 
