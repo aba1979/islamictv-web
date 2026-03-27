@@ -469,12 +469,12 @@
     <div class="settings-section">
       <span class="settings-label">Calculation Method</span>
       <div class="freq-options" id="methodOptions">
+        <button class="freq-btn" data-method="15" onclick="selectMethod(15)">Moonsighting</button>
         <button class="freq-btn" data-method="3" onclick="selectMethod(3)">MWL</button>
         <button class="freq-btn" data-method="2" onclick="selectMethod(2)">ISNA</button>
         <button class="freq-btn" data-method="4" onclick="selectMethod(4)">Umm Al-Qura</button>
         <button class="freq-btn" data-method="5" onclick="selectMethod(5)">Karachi</button>
         <button class="freq-btn" data-method="1" onclick="selectMethod(1)">Egypt</button>
-        <button class="freq-btn" data-method="13" onclick="selectMethod(13)">Turkey</button>
       </div>
     </div>
 
@@ -757,7 +757,7 @@ function selectFreq(mins){
   duaTimer = setInterval(nextDua, duaIntervalMs);
 }
 
-function getMethod(){ return parseInt(localStorage.getItem('calc_method')) || 3; }
+function getMethod(){ return parseInt(localStorage.getItem('calc_method')) || 15; }
 function getSchool(){ return parseInt(localStorage.getItem('asr_school') ?? '1'); }
 
 function selectMethod(m){
