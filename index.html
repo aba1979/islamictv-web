@@ -459,6 +459,26 @@
     </div>
 
     <div class="settings-section">
+      <span class="settings-label">Asr Calculation</span>
+      <div class="freq-options" id="schoolOptions">
+        <button class="freq-btn" data-school="0" onclick="selectSchool(0)">Standard (Shafi)</button>
+        <button class="freq-btn" data-school="1" onclick="selectSchool(1)">Hanafi</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <span class="settings-label">Calculation Method</span>
+      <div class="freq-options" id="methodOptions">
+        <button class="freq-btn" data-method="3" onclick="selectMethod(3)">MWL</button>
+        <button class="freq-btn" data-method="2" onclick="selectMethod(2)">ISNA</button>
+        <button class="freq-btn" data-method="4" onclick="selectMethod(4)">Umm Al-Qura</button>
+        <button class="freq-btn" data-method="5" onclick="selectMethod(5)">Karachi</button>
+        <button class="freq-btn" data-method="1" onclick="selectMethod(1)">Egypt</button>
+        <button class="freq-btn" data-method="13" onclick="selectMethod(13)">Turkey</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
       <span class="settings-label">Adhan Audio</span>
       <div class="mute-toggle" onclick="toggleMute()">
         <span>Mute Adhan</span>
@@ -700,15 +720,24 @@ function toggleMute(){
 
 // ── Settings panel ────────────────────────────────────────
 function openSettings(){
-  // Populate current city
   const city = localStorage.getItem('location_city') || '';
   document.getElementById('settingsCityInput').value = city;
-  // Highlight current frequency
+
   const savedMins = parseInt(localStorage.getItem('dua_freq_mins')) || 5;
-  document.querySelectorAll('.freq-btn').forEach(b => {
+  document.querySelectorAll('#freqOptions .freq-btn').forEach(b => {
     b.classList.toggle('active', parseInt(b.dataset.mins) === savedMins);
   });
-  // Reflect mute state
+
+  const savedSchool = getSchool();
+  document.querySelectorAll('#schoolOptions .freq-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.school) === savedSchool);
+  });
+
+  const savedMethod = getMethod();
+  document.querySelectorAll('#methodOptions .freq-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.method) === savedMethod);
+  });
+
   document.getElementById('muteToggle').classList.toggle('on', isMuted);
   document.getElementById('settingsPanel').classList.add('show');
 }
@@ -718,7 +747,7 @@ function closeSettings(){
 }
 
 function selectFreq(mins){
-  document.querySelectorAll('.freq-btn').forEach(b => {
+  document.querySelectorAll('#freqOptions .freq-btn').forEach(b => {
     b.classList.toggle('active', parseInt(b.dataset.mins) === mins);
   });
   localStorage.setItem('dua_freq_mins', mins);
@@ -726,6 +755,36 @@ function selectFreq(mins){
   // Restart timer with new interval
   if(duaTimer) clearInterval(duaTimer);
   duaTimer = setInterval(nextDua, duaIntervalMs);
+}
+
+function getMethod(){ return parseInt(localStorage.getItem('calc_method')) || 3; }
+function getSchool(){ return parseInt(localStorage.getItem('asr_school') ?? '1'); }
+
+function selectMethod(m){
+  document.querySelectorAll('#methodOptions .freq-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.method) === m);
+  });
+  localStorage.setItem('calc_method', m);
+  clearDayCache();
+  reloadPrayerTimes();
+}
+
+function selectSchool(s){
+  document.querySelectorAll('#schoolOptions .freq-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.school) === s);
+  });
+  localStorage.setItem('asr_school', s);
+  clearDayCache();
+  reloadPrayerTimes();
+}
+
+function reloadPrayerTimes(){
+  const lat  = localStorage.getItem('location_lat');
+  const lng  = localStorage.getItem('location_lng');
+  const city = localStorage.getItem('location_city');
+  if(lat && lng) fetchPrayerTimes(parseFloat(lat), parseFloat(lng));
+  else if(city)  fetchPrayerTimesByCity(city);
+  else           fetchPrayerTimes(51.5074, -0.1278);
 }
 
 function saveSettingsCity(){
@@ -767,7 +826,7 @@ async function fetchPrayerTimes(lat, lng){
   if(cached){ applyPrayerTimes(JSON.parse(cached)); return; }
 
   try {
-    const res  = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=3&school=1`);
+    const res  = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${getMethod()}&school=${getSchool()}`);
     const data = await res.json();
     if(data.code === 200){
       localStorage.setItem(cacheKey, JSON.stringify(data.data.timings));
@@ -782,7 +841,7 @@ async function fetchPrayerTimesByCity(city){
   if(cached){ applyPrayerTimes(JSON.parse(cached)); return; }
 
   try {
-    const res  = await fetch(`https://api.aladhan.com/v1/timingsByAddress?address=${encodeURIComponent(city)}&method=3&school=1`);
+    const res  = await fetch(`https://api.aladhan.com/v1/timingsByAddress?address=${encodeURIComponent(city)}&method=${getMethod()}&school=${getSchool()}`);
     const data = await res.json();
     if(data.code === 200){
       localStorage.setItem(cacheKey, JSON.stringify(data.data.timings));
