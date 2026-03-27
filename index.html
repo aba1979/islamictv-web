@@ -903,7 +903,7 @@ function showDua(idx, animate){
 
   function apply(){
     document.getElementById('duaCounter').textContent    = `${dua.number} / 40 \u00a0·\u00a0 RABBANA DUAS`;
-    document.getElementById('duaArabic').textContent      = dua.arabic;
+    document.getElementById('duaArabic').textContent      = dua.arabic.replace(/[\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]/g, '');
     document.getElementById('duaTranslit').textContent    = dua.transliteration;
     document.getElementById('duaTranslation').textContent = dua.translation;
     document.getElementById('duaReference').textContent   = dua.reference;
