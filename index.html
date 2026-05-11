@@ -99,11 +99,14 @@
     /* ── Middle: dua card (spans full width) ── */
     .dua-block {
       grid-column: 1 / 3; grid-row: 2;
-      display: flex; align-items: stretch;
+      display: flex; align-items: center;
       min-height: 0; overflow: hidden;
+      gap: clamp(8px, 1.2vw, 14px);
     }
     .dua-card {
-      width: 100%; max-height: 100%;
+      flex: 1;
+      min-width: 0;
+      max-height: 100%;
       overflow: hidden;
       background: rgba(0,0,0,.58);
       border: 1px solid rgba(201,168,76,.3);
@@ -114,8 +117,33 @@
       display: flex; flex-direction: column;
       justify-content: center;
       gap: clamp(4px, 0.6vw, 8px);
+      touch-action: pan-y;
     }
     .dua-card.fade { opacity: 0; }
+    .dua-nav {
+      width: clamp(42px, 5vw, 64px);
+      height: clamp(64px, 10vw, 132px);
+      flex: 0 0 auto;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(201,168,76,.3);
+      border-radius: 12px;
+      color: #C9A84C;
+      font-size: clamp(30px, 4vw, 54px);
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+    .dua-nav:hover {
+      background: rgba(201,168,76,.14);
+      border-color: rgba(201,168,76,.55);
+    }
+    .dua-nav:active { transform: scale(.96); }
+    .dua-nav:focus-visible {
+      outline: 2px solid #C9A84C;
+      outline-offset: 3px;
+    }
     .dua-counter {
       color: #C9A84C;
       font-size: clamp(9px, 0.9vw, 12px);
@@ -422,6 +450,19 @@
     }
     .mute-badge.show { display: block; }
     .mute-badge:hover { background: rgba(201,168,76,.15); }
+
+    @media (max-width: 640px) {
+      .dua-block {
+        align-items: stretch;
+        gap: 8px;
+      }
+      .dua-nav {
+        width: 40px;
+        height: auto;
+        min-height: 92px;
+        border-radius: 10px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -530,6 +571,7 @@
   </div>
 
   <div class="dua-block">
+    <button class="dua-nav" type="button" onclick="manualDua(-1)" aria-label="Previous dua" title="Previous dua" data-dua-nav="previous">&#8249;</button>
     <div class="dua-card" id="duaCard">
       <div class="dua-counter" id="duaCounter">1 / 40 &nbsp;·&nbsp; RABBANA DUAS</div>
       <div class="dua-arabic" id="duaArabic"></div>
@@ -538,6 +580,7 @@
       <div class="dua-reference" id="duaReference"></div>
       <div class="dua-recommended" id="duaRecommended"></div>
     </div>
+    <button class="dua-nav" type="button" onclick="manualDua(1)" aria-label="Next dua" title="Next dua" data-dua-nav="next">&#8250;</button>
   </div>
 
   <div class="prayer-block">
@@ -583,6 +626,8 @@ let   duaTimer      = null;
 let prayerTimes    = {};
 let hijriDateStr   = '';
 let duaIndex       = 0;
+let duaFadeTimer   = null;
+let duaTouchStartX = 0;
 let bgIndex        = 0;
 let bgActive       = 'A';
 let athanPlayer    = null;
@@ -768,13 +813,11 @@ function selectFreq(mins){
   });
   localStorage.setItem('dua_freq_mins', mins);
   duaIntervalMs = mins * 60 * 1000;
-  // Restart timer with new interval
-  if(duaTimer) clearInterval(duaTimer);
-  duaTimer = setInterval(nextDua, duaIntervalMs);
+  restartDuaTimer();
 }
 
 function getMethod(){ return parseInt(localStorage.getItem('calc_method')) || 15; }
-function getSchool(){ return parseInt(localStorage.getItem('asr_school') ?? '1'); }
+function getSchool(){ return parseInt(localStorage.getItem('asr_school') ?? '0'); }
 
 function selectMethod(m){
   document.querySelectorAll('#methodOptions .freq-btn').forEach(b => {
@@ -919,15 +962,62 @@ function showDua(idx, animate){
     document.getElementById('duaRecommended').textContent = dua.recommendedUse;
   }
 
+  if(duaFadeTimer){
+    clearTimeout(duaFadeTimer);
+    duaFadeTimer = null;
+    card.classList.remove('fade');
+  }
+
   if(animate){
     card.classList.add('fade');
-    setTimeout(() => { apply(); card.classList.remove('fade'); }, 500);
+    duaFadeTimer = setTimeout(() => {
+      apply();
+      card.classList.remove('fade');
+      duaFadeTimer = null;
+    }, 500);
   } else { apply(); }
 }
 
-function nextDua(){
-  duaIndex = (duaIndex + 1) % RABBANA_DUAS.length;
+function moveDua(step, resetTimer){
+  duaIndex = (duaIndex + step + RABBANA_DUAS.length) % RABBANA_DUAS.length;
   showDua(duaIndex, true);
+  if(resetTimer) restartDuaTimer();
+}
+
+function nextDua(){
+  moveDua(1, false);
+}
+
+function manualDua(step){
+  moveDua(step, true);
+}
+
+function restartDuaTimer(){
+  if(duaTimer) clearInterval(duaTimer);
+  duaTimer = setInterval(nextDua, duaIntervalMs);
+}
+
+function handleDuaKeydown(event){
+  if(document.getElementById('settingsPanel').classList.contains('show')) return;
+  if(document.getElementById('locationPrompt').classList.contains('show')) return;
+
+  if(event.key === 'ArrowLeft'){
+    event.preventDefault();
+    manualDua(-1);
+  } else if(event.key === 'ArrowRight'){
+    event.preventDefault();
+    manualDua(1);
+  }
+}
+
+function handleDuaTouchStart(event){
+  duaTouchStartX = event.changedTouches[0].clientX;
+}
+
+function handleDuaTouchEnd(event){
+  const dx = event.changedTouches[0].clientX - duaTouchStartX;
+  if(Math.abs(dx) < 40) return;
+  manualDua(dx < 0 ? 1 : -1);
 }
 
 // ── Backgrounds ───────────────────────────────────────────
@@ -1082,7 +1172,12 @@ function init(){
   setInterval(updateClock, 1000);
   updateClock();
 
-  duaTimer = setInterval(nextDua, duaIntervalMs);
+  const duaCard = document.getElementById('duaCard');
+  duaCard.addEventListener('touchstart', handleDuaTouchStart, { passive: true });
+  duaCard.addEventListener('touchend', handleDuaTouchEnd, { passive: true });
+  document.addEventListener('keydown', handleDuaKeydown);
+
+  restartDuaTimer();
   setInterval(nextBackground, BG_INTERVAL);
   scheduleMidnightRefresh();
 }
