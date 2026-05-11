@@ -573,7 +573,7 @@
   <div class="dua-block">
     <button class="dua-nav" type="button" onclick="manualDua(-1)" aria-label="Previous dua" title="Previous dua" data-dua-nav="previous">&#8249;</button>
     <div class="dua-card" id="duaCard">
-      <div class="dua-counter" id="duaCounter">1 / 40 &nbsp;·&nbsp; RABBANA DUAS</div>
+      <div class="dua-counter" id="duaCounter">1 / 52 &nbsp;·&nbsp; DUAS</div>
       <div class="dua-arabic" id="duaArabic"></div>
       <div class="dua-transliteration" id="duaTranslit"></div>
       <div class="dua-translation" id="duaTranslation"></div>
@@ -954,7 +954,7 @@ function showDua(idx, animate){
   const card = document.getElementById('duaCard');
 
   function apply(){
-    document.getElementById('duaCounter').textContent    = `${dua.number} / 40 \u00a0·\u00a0 RABBANA DUAS`;
+    document.getElementById('duaCounter').textContent    = `${dua.number} / ${RABBANA_DUAS.length} \u00a0·\u00a0 DUAS`;
     document.getElementById('duaArabic').textContent      = dua.arabic.replace(/[\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]/g, '');
     document.getElementById('duaTranslit').textContent    = dua.transliteration;
     document.getElementById('duaTranslation').textContent = dua.translation;

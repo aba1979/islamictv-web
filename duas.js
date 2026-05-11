@@ -318,5 +318,101 @@ const RABBANA_DUAS = [
     translation: "Our Lord, perfect for us our light and forgive us. Indeed, You are over all things competent.",
     reference: "Quran 66:8",
     recommendedUse: "Another beautiful du'a asking for Jannah. We learn in Surah Al-Hadid verse 12 how on the day of judgment the believing men and women will have a light illuminating from their right hands. They will be told \"a good tiding for you today.\" The hypocrites will find themselves stumbling in darkness. This du'a asks Allah (swt) to perfect or to complete our light on that day and to forgive us our sins. Indeed, Allah (swt) is competent and powerful over all things."
+  },
+  {
+    number: 41,
+    arabic: "رَبِّ زِدْنِي عِلْمًا",
+    transliteration: "Rabbi zidnee ilma",
+    translation: "My Lord, increase me in knowledge.",
+    reference: "Quran 20:114",
+    recommendedUse: "To increase in knowledge."
+  },
+  {
+    number: 42,
+    arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا",
+    transliteration: "Allahumma inni as'aluka ilman naafi'an, wa rizqan tayyiban, wa 'amalan mutaqabbalan",
+    translation: "O Allah, I ask You for beneficial knowledge, wholesome sustenance, and deeds which are accepted.",
+    reference: "Ibn Majah",
+    recommendedUse: "For beneficial knowledge."
+  },
+  {
+    number: 43,
+    arabic: "رَبِّ اشْرَحْ لِي صَدْرِي، وَيَسِّرْ لِي أَمْرِي",
+    transliteration: "Rabbish rah li sadri, wa yassir li amri",
+    translation: "My Lord, put my heart at peace for me, and make my task easy for me.",
+    reference: "Quran 20:25-26",
+    recommendedUse: "For inner peace and ease."
+  },
+  {
+    number: 44,
+    arabic: "لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+    transliteration: "La ilaha illa anta subhanaka inni kuntu minaz-zalimin",
+    translation: "There is no god worthy of worship except You; You are free from all imperfection. Indeed, I have been of the wrongdoers.",
+    reference: "Quran 21:87",
+    recommendedUse: "For difficult times."
+  },
+  {
+    number: 45,
+    arabic: "لَا إِلَٰهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَٰهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَٰهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ",
+    transliteration: "La ilaha illallahul-'Azimul-Halim, la ilaha illallahu Rabbul-'Arshil-'Azim, la ilaha illallahu Rabbus-samawati wa Rabbul-ardi wa Rabbul-'Arshil-Karim",
+    translation: "There is no god worthy of worship but Allah, the Supreme, the Forbearing. There is no god worthy of worship but Allah, Lord of the Magnificent Throne. There is no god worthy of worship but Allah, Lord of the heavens, Lord of the earth, Lord of the Noble Throne.",
+    reference: "Bukhari",
+    recommendedUse: "For grief and anxiety."
+  },
+  {
+    number: 46,
+    arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَأَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ، وَأَعُوذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ",
+    transliteration: "Allahumma inni a'udhu bika minal-hammi wal-hazan, wa a'udhu bika minal-'ajzi wal-kasal, wa a'udhu bika minal-jubni wal-bukhl, wa a'udhu bika min ghalabatid-dayni wa qahrir-rijal",
+    translation: "O Allah, I seek Your protection from anxiety and grief. I seek Your protection from inability and laziness. I seek Your protection from cowardice and miserliness, and I seek Your protection from being overcome by debt and being overpowered by men.",
+    reference: "Abu Dawud",
+    recommendedUse: "Protect yourself from anxiety, laziness, and debt."
+  },
+  {
+    number: 47,
+    arabic: "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي، وَعَلِّمْنِي مَا يَنْفَعُنِي، وَزِدْنِي عِلْمًا",
+    transliteration: "Allahummanfa'ni bima 'allamtani, wa 'allimni ma yanfa'uni, wa zidni 'ilma",
+    translation: "O Allah, benefit me with what You have taught me, teach me what will benefit me, and increase me in knowledge.",
+    reference: "Tirmidhi",
+    recommendedUse: "Knowledge inspired by Allah."
+  },
+  {
+    number: 48,
+    arabic: "اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا، وَأَنْتَ تَجْعَلُ الْحَزْنَ إِذَا شِئْتَ سَهْلًا",
+    transliteration: "Allahumma la sahla illa ma ja'altahu sahla, wa anta taj'alul-hazna idha shi'ta sahla",
+    translation: "O Allah, there is no ease except in that which You have made easy, and You make the difficulty easy when You wish.",
+    reference: "Ibn Hibban",
+    recommendedUse: "When one is in a difficult situation."
+  },
+  {
+    number: 49,
+    arabic: "حَسْبِيَ اللَّهُ وَنِعْمَ الْوَكِيلُ",
+    transliteration: "Hasbiyallahu wa ni'mal wakeel",
+    translation: "Allah is enough for me and He is the Best Protector.",
+    reference: "Bukhari",
+    recommendedUse: "When overwhelmed with difficulties."
+  },
+  {
+    number: 50,
+    arabic: "يَا حَيُّ يَا قَيُّومُ، بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ",
+    transliteration: "Ya Hayyu ya Qayyum, bi rahmatika astaghith, aslih li sha'ni kullahu, wa la takilni ila nafsi tarfata 'ayn",
+    translation: "O The Ever Living, The Sustainer of all; I seek assistance through Your mercy. Rectify all of my affairs and do not entrust me to myself for the blink of an eye.",
+    reference: "Nasa'i",
+    recommendedUse: "Entrust all your matters to Allah."
+  },
+  {
+    number: 51,
+    arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ",
+    transliteration: "Allahumma salli 'ala Muhammadin wa 'ala ali Muhammad",
+    translation: "O Allah, honour and have mercy upon Muhammad (saws) and his household.",
+    reference: "Tirmidhi",
+    recommendedUse: "A solution to your problems."
+  },
+  {
+    number: 52,
+    arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+    transliteration: "La hawla wa la quwwata illa billah",
+    translation: "There is no power in averting evil or strength in attaining good except through Allah.",
+    reference: "Hakim",
+    recommendedUse: "A powerful weapon and coping tool."
   }
 ];
