@@ -635,6 +635,7 @@ let duaPlayer      = null;
 let isMuted        = false;
 let athanFired     = {};   // { "Fajr_2026-03-27": true } — prevent double-firing
 let notifGranted   = false;
+let swRegistration = null;  // Service Worker registration (for cross-tab notifications)
 
 // ── Helpers ──────────────────────────────────────────────
 const pad = n => String(n).padStart(2,'0');
@@ -859,21 +860,54 @@ function saveSettingsCity(){
 }
 
 // ── Notifications ─────────────────────────────────────────
-function requestNotifications(){
-  if('Notification' in window && Notification.permission === 'default'){
-    Notification.requestPermission().then(p => { notifGranted = p === 'granted'; });
-  } else if(Notification.permission === 'granted'){
-    notifGranted = true;
+async function requestNotifications(){
+  if(!('Notification' in window)) return;
+
+  // Register Service Worker first (needed for reliable cross-tab notifications)
+  if('serviceWorker' in navigator && !swRegistration){
+    try {
+      swRegistration = await navigator.serviceWorker.register('sw.js');
+      await navigator.serviceWorker.ready;
+    } catch(e){ console.warn('SW registration failed:', e); }
+  }
+
+  if(Notification.permission === 'default'){
+    const p = await Notification.requestPermission();
+    notifGranted = p === 'granted';
+  } else {
+    notifGranted = Notification.permission === 'granted';
   }
 }
 
-function sendNotification(prayerName){
+async function sendNotification(prayerName){
   if(!notifGranted || Notification.permission !== 'granted') return;
+  const arabicName = getArabicName(prayerName);
+
+  // Prefer SW-based notification — works even when this tab is not in focus
   try {
-    new Notification(`🕌 ${prayerName} Time`, {
-      body: `It is time for ${prayerName} prayer.`,
-      icon: 'images/mosque_1.jpg',
-      silent: true
+    const reg = swRegistration || (await navigator.serviceWorker.ready.catch(() => null));
+    if(reg && reg.showNotification){
+      await reg.showNotification(`🕌 ${prayerName} — Time to Pray`, {
+        body:             `It is time for ${prayerName} (${arabicName}) prayer.\nMay Allah accept it from you.`,
+        icon:             'images/mosque_1.jpg',
+        badge:            'images/mosque_1.jpg',
+        tag:              `salah-${prayerName}`,
+        renotify:         true,
+        requireInteraction: true,
+        silent:           false,
+        vibrate:          [300, 150, 300, 150, 300]
+      });
+      return;
+    }
+  } catch(e){ console.warn('SW notification failed, falling back:', e); }
+
+  // Fallback: plain Notification (works when tab is active / focused)
+  try {
+    new Notification(`🕌 ${prayerName} — Time to Pray`, {
+      body:  `It is time for ${prayerName} (${arabicName}) prayer.`,
+      icon:  'images/mosque_1.jpg',
+      tag:   `salah-${prayerName}`,
+      renotify: true
     });
   } catch(e){}
 }
